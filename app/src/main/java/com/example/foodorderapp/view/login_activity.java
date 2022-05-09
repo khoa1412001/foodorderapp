@@ -30,10 +30,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class login_activity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,FirebaseAuth.AuthStateListener {
-    Button btnDangNhapGoogle;
+    Button btnDangNhapGoogle,btnDangNhap;
     GoogleApiClient apiClient;
     FirebaseAuth   firebaseAuth;
     TextView btnDangKy;
+    EditText txtEmail,txtMK;
     public static int CODE_DANGNHAP_GOOGLE = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +58,21 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
                 startActivity(intent);
             }
         });
+        btnDangNhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = txtEmail.getText().toString();
+                String matkhau = txtMK.getText().toString();
+                firebaseAuth.signInWithEmailAndPassword(email,matkhau);
+            }
+        });
     }
     private void addControls() {
         btnDangNhapGoogle = findViewById(R.id.btnDangNhapGoogle);
         btnDangKy = findViewById(R.id.txtDangKy);
-
+        btnDangNhap = findViewById(R.id.btnDangNhap);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtMK = findViewById(R.id.txtMK);
         InitDangNhapGoogle();
         firebaseAuth = FirebaseAuth.getInstance();
     }
@@ -121,7 +132,7 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
             //startActivity(intent);
         }
         else{
-            Toast.makeText(this,"failed",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Tài khoản không hợp lệ",Toast.LENGTH_LONG).show();
         }
     }
 }
