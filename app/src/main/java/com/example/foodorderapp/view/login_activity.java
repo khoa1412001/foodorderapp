@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodorderapp.R;
@@ -31,6 +33,7 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
     Button btnDangNhapGoogle;
     GoogleApiClient apiClient;
     FirebaseAuth   firebaseAuth;
+    TextView btnDangKy;
     public static int CODE_DANGNHAP_GOOGLE = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +50,21 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
                 DangNhapGoogle();
             }
         });
+        btnDangKy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(login_activity.this,register_activity.class);
+                startActivity(intent);
+            }
+        });
     }
+    private void addControls() {
+        btnDangNhapGoogle = findViewById(R.id.btnDangNhapGoogle);
+        btnDangKy = findViewById(R.id.txtDangKy);
 
+        InitDangNhapGoogle();
+        firebaseAuth = FirebaseAuth.getInstance();
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -61,11 +77,7 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
         firebaseAuth.removeAuthStateListener(this);
     }
 
-    private void addControls() {
-        btnDangNhapGoogle = findViewById(R.id.btnDangNhapGoogle);
-        InitDangNhapGoogle();
-        firebaseAuth = FirebaseAuth.getInstance();
-    }
+
 
     private void InitDangNhapGoogle(){
         GoogleSignInOptions options = new GoogleSignInOptions.Builder()
@@ -106,8 +118,7 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null){
             Intent intent = new Intent(this,MainActivity.class);
-            startActivity(intent);
-            Toast.makeText(this,"success",Toast.LENGTH_LONG).show();
+            //startActivity(intent);
         }
         else{
             Toast.makeText(this,"failed",Toast.LENGTH_LONG).show();
