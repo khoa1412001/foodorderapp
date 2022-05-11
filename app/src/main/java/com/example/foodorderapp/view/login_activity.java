@@ -33,7 +33,7 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
     Button btnDangNhapGoogle,btnDangNhap;
     GoogleApiClient apiClient;
     FirebaseAuth   firebaseAuth;
-    TextView btnDangKy;
+    TextView btnDangKy,btnQuenMK;
     EditText txtEmail,txtMK;
     public static int CODE_DANGNHAP_GOOGLE = 3;
     @Override
@@ -63,7 +63,21 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
             public void onClick(View view) {
                 String email = txtEmail.getText().toString();
                 String matkhau = txtMK.getText().toString();
-                firebaseAuth.signInWithEmailAndPassword(email,matkhau);
+                if (email.trim().length() == 0 || matkhau.trim().length() == 0)
+                    Toast.makeText(login_activity.this, "Email và mật khẩu không được để trống", Toast.LENGTH_SHORT).show();
+                else firebaseAuth.signInWithEmailAndPassword(email,matkhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful())
+                            Toast.makeText(login_activity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        btnQuenMK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(login_activity.this,forget_password_activity.class));
             }
         });
     }
@@ -73,6 +87,7 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
         btnDangNhap = findViewById(R.id.btnDangNhap);
         txtEmail = findViewById(R.id.txtEmail);
         txtMK = findViewById(R.id.txtMK);
+        btnQuenMK = findViewById(R.id.txtQuenMK);
         InitDangNhapGoogle();
         firebaseAuth = FirebaseAuth.getInstance();
     }
@@ -87,8 +102,6 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
         super.onStop();
         firebaseAuth.removeAuthStateListener(this);
     }
-
-
 
     private void InitDangNhapGoogle(){
         GoogleSignInOptions options = new GoogleSignInOptions.Builder()
@@ -129,7 +142,7 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null){
             Intent intent = new Intent(this,MainActivity.class);
-            //startActivity(intent);
+            startActivity(intent);
         }
         else{
             Toast.makeText(this,"Tài khoản không hợp lệ",Toast.LENGTH_LONG).show();
