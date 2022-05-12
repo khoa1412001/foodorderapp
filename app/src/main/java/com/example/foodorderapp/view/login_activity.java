@@ -30,10 +30,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class login_activity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,FirebaseAuth.AuthStateListener {
-    Button btnDangNhapGoogle;
+    Button btnDangNhapGoogle,btnDangNhap;
     GoogleApiClient apiClient;
     FirebaseAuth   firebaseAuth;
-    TextView btnDangKy;
+    TextView btnDangKy,btnQuenMK;
+    EditText txtEmail,txtMK;
     public static int CODE_DANGNHAP_GOOGLE = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +58,36 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
                 startActivity(intent);
             }
         });
+        btnDangNhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = txtEmail.getText().toString();
+                String matkhau = txtMK.getText().toString();
+                if (email.trim().length() == 0 || matkhau.trim().length() == 0)
+                    Toast.makeText(login_activity.this, "Email và mật khẩu không được để trống", Toast.LENGTH_SHORT).show();
+                else firebaseAuth.signInWithEmailAndPassword(email,matkhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful())
+                            Toast.makeText(login_activity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        btnQuenMK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(login_activity.this,forget_password_activity.class));
+            }
+        });
     }
     private void addControls() {
         btnDangNhapGoogle = findViewById(R.id.btnDangNhapGoogle);
         btnDangKy = findViewById(R.id.txtDangKy);
-
+        btnDangNhap = findViewById(R.id.btnDangNhap);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtMK = findViewById(R.id.txtMK);
+        btnQuenMK = findViewById(R.id.txtQuenMK);
         InitDangNhapGoogle();
         firebaseAuth = FirebaseAuth.getInstance();
     }
@@ -76,8 +102,6 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
         super.onStop();
         firebaseAuth.removeAuthStateListener(this);
     }
-
-
 
     private void InitDangNhapGoogle(){
         GoogleSignInOptions options = new GoogleSignInOptions.Builder()
@@ -118,10 +142,10 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null){
             Intent intent = new Intent(this,MainActivity.class);
-            //startActivity(intent);
+            startActivity(intent);
         }
         else{
-            Toast.makeText(this,"failed",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Tài khoản không hợp lệ",Toast.LENGTH_LONG).show();
         }
     }
 }

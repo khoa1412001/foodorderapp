@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrderApp">
         <activity
+            android:name=".view.forget_password_activity"
+            android:exported="false" />
+        <activity
             android:name=".view.register_activity"
             android:exported="false" />
         <activity
