@@ -1,4 +1,4 @@
-package com.example.foodorderapp.model;
+package com.example.foodorderapp.models;
 
 import java.io.Serializable;
 

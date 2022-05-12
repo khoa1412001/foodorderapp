@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrderApp">
         <activity
-            android:name=".view.forget_password_activity"
+            android:name=".views.forget_password_activity"
             android:exported="false" />
         <activity
-            android:name=".view.register_activity"
+            android:name=".views.register_activity"
             android:exported="false" />
         <activity
-            android:name=".view.login_activity"
+            android:name=".views.login_activity"
             android:exported="false" />
         <activity
-            android:name=".view.splash_activity"
+            android:name=".views.splash_activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.MainActivity"
+            android:name=".views.MainActivity"
             android:exported="true" />
     </application>
 
