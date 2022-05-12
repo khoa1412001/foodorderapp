@@ -22,9 +22,9 @@ public class AdapterViewPagerTrangChu extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return angiFragment;
-            case 1:
                 return odauFragment;
+            case 1:
+                return angiFragment;
             default:
                 return null;
         }

@@ -12,25 +12,29 @@
         android:layout_height="wrap_content"
         android:background="@color/primaryDark">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            tools:srcCompat="@drawable/logo"
-            />
+     <ImageView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         app:srcCompat = "@drawable/logo"/>
         <RadioGroup
+            android:id="@+id/rgOdauAngi"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:checkedButton="@id/rbOdau">
             <RadioButton
+                android:id="@+id/rbOdau"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Ở đâu"
                 android:button="@android:color/transparent"
                 android:background="@drawable/custom_radio_odau"
                 android:padding="10dp"
-                android:textColor="@drawable/changetext_radio_trangchu"/>
+                android:textColor="@drawable/changetext_radio_trangchu"
+                />
             <RadioButton
+                android:id="@+id/rbAngi"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Ăn gì"
@@ -40,9 +44,9 @@
                 android:textColor="@drawable/changetext_radio_trangchu"/>
         </RadioGroup>
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            tools:srcCompat="@drawable/plus_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat = "@drawable/plus_logo"
             android:layout_gravity="right"
             android:layout_marginRight="10dp"/>
     </androidx.appcompat.widget.Toolbar>

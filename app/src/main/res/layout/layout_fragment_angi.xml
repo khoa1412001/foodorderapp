@@ -7,9 +7,11 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:checkedButton="@id/rbAngi_moinhat">
         <RadioButton
-            android:layout_width="wrap_content"
+            android:id="@+id/rbAngi_moinhat"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Mới nhất"
@@ -25,7 +27,8 @@
             android:layout_height="match_parent"
             />
         <RadioButton
-            android:layout_width="wrap_content"
+            android:id="@+id/rbAngi_danhmuc"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Danh mục"
@@ -41,7 +44,8 @@
             android:layout_height="match_parent"
             />
         <RadioButton
-            android:layout_width="wrap_content"
+            android:id="@+id/rbAngi_city"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="HCM"
