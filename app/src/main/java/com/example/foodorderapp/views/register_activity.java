@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.foodorderapp.R;
+import com.example.foodorderapp.controllers.DangKyController;
+import com.example.foodorderapp.models.ThanhVienModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,6 +21,7 @@ public class register_activity extends AppCompatActivity {
     Button btnDangKy;
     EditText txtEmail,txtMK,txtNhapLaiMK;
     FirebaseAuth firebaseAuth;
+    DangKyController dangKyController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,12 @@ public class register_activity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()){
+                                ThanhVienModel thanhVienModel = new ThanhVienModel();
+                                thanhVienModel.setHoten(email);
+                                thanhVienModel.setHinhanh("user.jpg");
+                                dangKyController = new DangKyController();
+                                String uid = task.getResult().getUser().getUid();
+                                dangKyController.ThemThongTinThanhVienController(thanhVienModel,uid);
                                 Toast.makeText(register_activity.this,"Đăng ký tài khoản thành công",Toast.LENGTH_SHORT).show();
                             }
                             else {

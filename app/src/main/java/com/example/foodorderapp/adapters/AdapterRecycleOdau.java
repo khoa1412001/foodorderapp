@@ -62,7 +62,7 @@ public class AdapterRecycleOdau extends RecyclerView.Adapter<AdapterRecycleOdau.
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                     holder.ivDoan.setImageBitmap(bitmap);
                 }
-            })
+            });
         }
     }
 
