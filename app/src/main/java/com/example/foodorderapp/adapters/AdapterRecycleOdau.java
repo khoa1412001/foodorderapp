@@ -2,6 +2,7 @@ package com.example.foodorderapp.adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderapp.R;
 import com.example.foodorderapp.models.QuanAnModel;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -63,6 +66,12 @@ public class AdapterRecycleOdau extends RecyclerView.Adapter<AdapterRecycleOdau.
                     holder.ivDoan.setImageBitmap(bitmap);
                 }
             });
+            /*storageReference.getBytes(MEGA_BYTE).addOnCompleteListener(new OnCompleteListener<byte[]>() {
+                @Override
+                public void onComplete(@NonNull Task<byte[]> task) {
+                    Log.d("kiemtra", task.getException().getMessage());
+                }
+            });*/
         }
     }
 

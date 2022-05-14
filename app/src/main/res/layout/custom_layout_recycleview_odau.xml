@@ -32,12 +32,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Gogi house"
+                    android:text="quanan"
                     android:textStyle="bold"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Quang Trung"/>
+                    android:text="diachi"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/txtDiaChiOdau"

@@ -1,6 +1,7 @@
 package com.example.foodorderapp.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,5 +35,6 @@ public class OdauController {
                 adapterRecycleOdau.notifyDataSetChanged();
             }
         };
+        quanAnModel.getDanhSachQuanAn(odauInterface);
     }
 }

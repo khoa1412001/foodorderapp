@@ -1,5 +1,7 @@
 package com.example.foodorderapp.models;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.foodorderapp.controllers.interfaces.OdauInterface;
@@ -13,14 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuanAnModel {
-    boolean giaoHang;
+    boolean giaohang;
     String giomocua,giodongcua,tenquanan,videogioithieu,maquanan;
     List<String> tienich;
     List<String> hinhanh;
+    List<BinhLuanModel> binhLuanModelList;
     long luotthich;
     DatabaseReference db;
     public QuanAnModel(){
         db = FirebaseDatabase.getInstance().getReference();
+    }
+    public List<BinhLuanModel> getBinhLuanModelList() {
+        return binhLuanModelList;
+    }
+
+    public void setBinhLuanModelList(List<BinhLuanModel> binhLuanModelList) {
+        this.binhLuanModelList = binhLuanModelList;
     }
 
     public List<String> getHinhanh() {
@@ -48,11 +58,11 @@ public class QuanAnModel {
     }
 
     public boolean isGiaoHang() {
-        return giaoHang;
+        return giaohang;
     }
 
     public void setGiaoHang(boolean giaoHang) {
-        this.giaoHang = giaoHang;
+        this.giaohang = giaoHang;
     }
 
     public String getGiomocua() {
@@ -101,15 +111,23 @@ public class QuanAnModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 DataSnapshot dataQuanAn = snapshot.child("quanans");
-
                 for (DataSnapshot value:dataQuanAn.getChildren()){
                     QuanAnModel quanAnModel = value.getValue(QuanAnModel.class);
                     quanAnModel.setMaquanan(value.getKey());
                     DataSnapshot hinhanhQuanAn = snapshot.child("hinhanhquanans").child(value.getKey());
-                    hinhanh = new ArrayList<>();
+                    List<String> hinhanhs = new ArrayList<>();
+                    //lay hinh anh
                     for (DataSnapshot valueHinhanh: hinhanhQuanAn.getChildren())
-                        hinhanh.add(valueHinhanh.getValue(String.class));
-                    quanAnModel.setHinhanh(hinhanh);
+                        hinhanhs.add(valueHinhanh.getValue(String.class));
+                    quanAnModel.setHinhanh(hinhanhs);
+                    DataSnapshot dataBinhLuan = snapshot.child("binhluans").child(value.getKey());
+                    List<BinhLuanModel> binhLuanModels = new ArrayList<>();
+                    //lay binh luan
+                    for (DataSnapshot valueBinhLuan: dataBinhLuan.getChildren()){
+                        BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
+                        binhLuanModels.add(binhLuanModel);
+                    }
+                    quanAnModel.setBinhLuanModelList(binhLuanModels);
                     odauInterface.getDanhSachQuanAnModel(quanAnModel);
                 }
             }

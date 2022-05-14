@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodorderapp.R;
+import com.example.foodorderapp.controllers.DangKyController;
+import com.example.foodorderapp.models.ThanhVienModel;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -34,6 +36,7 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
     FirebaseAuth   firebaseAuth;
     TextView btnDangKy,btnQuenMK;
     EditText txtEmail,txtMK;
+    DangKyController dangKyController;
     public static int CODE_DANGNHAP_GOOGLE = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +119,19 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
     }
     private  void ChungThucDangNhapFireBase(String tokenID){
         AuthCredential authCredential = GoogleAuthProvider.getCredential(tokenID,null);
-        firebaseAuth.signInWithCredential(authCredential);
+        firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.getResult().getAdditionalUserInfo().isNewUser() == true) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    ThanhVienModel thanhVienModel = new ThanhVienModel();
+                    thanhVienModel.setHoten(user.getEmail());
+                    thanhVienModel.setHinhanh("user.jpg");
+                    dangKyController = new DangKyController();
+                    dangKyController.ThemThongTinThanhVienController(thanhVienModel,user.getUid());
+                }
+            }
+        });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -126,7 +141,6 @@ public class login_activity extends AppCompatActivity implements GoogleApiClient
                     .getSignInResultFromIntent(data);
             GoogleSignInAccount account = signInResult.getSignInAccount();
             String tokenID = account.getIdToken();
-            Log.d("token", "onActivityResult: " + tokenID);
             ChungThucDangNhapFireBase(tokenID);
         }
     }
