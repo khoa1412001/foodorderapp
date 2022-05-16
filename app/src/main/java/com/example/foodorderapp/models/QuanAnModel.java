@@ -1,5 +1,9 @@
 package com.example.foodorderapp.models;
 
+import android.graphics.Bitmap;
+import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,17 +18,94 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuanAnModel {
+public class QuanAnModel implements Parcelable{
     boolean giaohang;
-    String giomocua,giodongcua,tenquanan,videogioithieu,maquanan;
+    String giodongcua,giomocua,tenquanan,videogioithieu,maquanan;
     List<String> tienich;
-    List<String> hinhanh;
+    List<String> hinhanhquanan;
     List<BinhLuanModel> binhLuanModelList;
+    List<ChiNhanhQuanAnModel> chiNhanhQuanAnModelList;
+    List<Bitmap> bitmapList;
+    List<ThucDonModel> thucDons;
+
+    long giatoida;
+    long giatoithieu;
     long luotthich;
-    DatabaseReference db;
-    public QuanAnModel(){
-        db = FirebaseDatabase.getInstance().getReference();
+
+    public List<ThucDonModel> getThucDons() {
+        return thucDons;
     }
+
+    public void setThucDons(List<ThucDonModel> thucDons) {
+        this.thucDons = thucDons;
+    }
+
+    public long getGiatoida() {
+        return giatoida;
+    }
+
+    public void setGiatoida(long giatoida) {
+        this.giatoida = giatoida;
+    }
+
+    public long getGiatoithieu() {
+        return giatoithieu;
+    }
+
+    public void setGiatoithieu(long giatoithieu) {
+        this.giatoithieu = giatoithieu;
+    }
+
+
+
+    protected QuanAnModel(Parcel in) {
+        giaohang = in.readByte() != 0;
+        giodongcua = in.readString();
+        giomocua = in.readString();
+        tenquanan = in.readString();
+        videogioithieu = in.readString();
+        maquanan = in.readString();
+        tienich = in.createStringArrayList();
+        hinhanhquanan = in.createStringArrayList();
+        luotthich = in.readLong();
+        giatoida = in.readLong();
+        giatoithieu = in.readLong();
+        chiNhanhQuanAnModelList = new ArrayList<ChiNhanhQuanAnModel>();
+        in.readTypedList(chiNhanhQuanAnModelList,ChiNhanhQuanAnModel.CREATOR);
+        binhLuanModelList = new ArrayList<BinhLuanModel>();
+        in.readTypedList(binhLuanModelList,BinhLuanModel.CREATOR);
+    }
+
+    public static final Parcelable.Creator<QuanAnModel> CREATOR = new Parcelable.Creator<QuanAnModel>() {
+        @Override
+        public QuanAnModel createFromParcel(Parcel in) {
+            return new QuanAnModel(in);
+        }
+
+        @Override
+        public QuanAnModel[] newArray(int size) {
+            return new QuanAnModel[size];
+        }
+    };
+
+    public List<Bitmap> getBitmapList() {
+        return bitmapList;
+    }
+
+    public void setBitmapList(List<Bitmap> bitmapList) {
+        this.bitmapList = bitmapList;
+    }
+
+
+
+    public List<ChiNhanhQuanAnModel> getChiNhanhQuanAnModelList() {
+        return chiNhanhQuanAnModelList;
+    }
+
+    public void setChiNhanhQuanAnModelList(List<ChiNhanhQuanAnModel> chiNhanhQuanAnModelList) {
+        this.chiNhanhQuanAnModelList = chiNhanhQuanAnModelList;
+    }
+
     public List<BinhLuanModel> getBinhLuanModelList() {
         return binhLuanModelList;
     }
@@ -33,13 +114,17 @@ public class QuanAnModel {
         this.binhLuanModelList = binhLuanModelList;
     }
 
-    public List<String> getHinhanh() {
-        return hinhanh;
+
+    private DatabaseReference nodeRoot ;
+
+    public List<String> getHinhanhquanan() {
+        return hinhanhquanan;
     }
 
-    public void setHinhanh(List<String> hinhanh) {
-        this.hinhanh = hinhanh;
+    public void setHinhanhquanan(List<String> hinhanhquanan) {
+        this.hinhanhquanan = hinhanhquanan;
     }
+
 
     public long getLuotthich() {
         return luotthich;
@@ -49,28 +134,16 @@ public class QuanAnModel {
         this.luotthich = luotthich;
     }
 
-    public List<String> getTienich() {
-        return tienich;
+    public QuanAnModel(){
+        nodeRoot = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void setTienich(List<String> tienich) {
-        this.tienich = tienich;
-    }
-
-    public boolean isGiaoHang() {
+    public boolean isGiaohang() {
         return giaohang;
     }
 
-    public void setGiaoHang(boolean giaoHang) {
-        this.giaohang = giaoHang;
-    }
-
-    public String getGiomocua() {
-        return giomocua;
-    }
-
-    public void setGiomocua(String giomocua) {
-        this.giomocua = giomocua;
+    public void setGiaohang(boolean giaohang) {
+        this.giaohang = giaohang;
     }
 
     public String getGiodongcua() {
@@ -79,6 +152,14 @@ public class QuanAnModel {
 
     public void setGiodongcua(String giodongcua) {
         this.giodongcua = giodongcua;
+    }
+
+    public String getGiomocua() {
+        return giomocua;
+    }
+
+    public void setGiomocua(String giomocua) {
+        this.giomocua = giomocua;
     }
 
     public String getTenquanan() {
@@ -105,38 +186,127 @@ public class QuanAnModel {
         this.maquanan = maquanan;
     }
 
+    public List<String> getTienich() {
+        return tienich;
+    }
 
-    public void getDanhSachQuanAn(OdauInterface odauInterface){
+    public void setTienich(List<String> tienich) {
+        this.tienich = tienich;
+    }
+
+    private DataSnapshot dataRoot;
+    public void getDanhSachQuanAn(final OdauInterface odauInterface, final Location vitrihientai, final int itemtieptheo, final int itemdaco){
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                DataSnapshot dataQuanAn = snapshot.child("quanans");
-                for (DataSnapshot value:dataQuanAn.getChildren()){
-                    QuanAnModel quanAnModel = value.getValue(QuanAnModel.class);
-                    quanAnModel.setMaquanan(value.getKey());
-                    DataSnapshot hinhanhQuanAn = snapshot.child("hinhanhquanans").child(value.getKey());
-                    List<String> hinhanhs = new ArrayList<>();
-                    //lay hinh anh
-                    for (DataSnapshot valueHinhanh: hinhanhQuanAn.getChildren())
-                        hinhanhs.add(valueHinhanh.getValue(String.class));
-                    quanAnModel.setHinhanh(hinhanhs);
-                    DataSnapshot dataBinhLuan = snapshot.child("binhluans").child(value.getKey());
-                    List<BinhLuanModel> binhLuanModels = new ArrayList<>();
-                    //lay binh luan
-                    for (DataSnapshot valueBinhLuan: dataBinhLuan.getChildren()){
-                        BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
-                        binhLuanModels.add(binhLuanModel);
-                    }
-                    quanAnModel.setBinhLuanModelList(binhLuanModels);
-                    odauInterface.getDanhSachQuanAnModel(quanAnModel);
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dataRoot = dataSnapshot;
+                LayDanhSachQuanAn(dataSnapshot,odauInterface,vitrihientai,itemtieptheo,itemdaco);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         };
-        db.addListenerForSingleValueEvent(valueEventListener);
+
+        if(dataRoot != null){
+            LayDanhSachQuanAn(dataRoot,odauInterface,vitrihientai,itemtieptheo,itemdaco);
+        }else{
+            nodeRoot.addListenerForSingleValueEvent(valueEventListener);
+        }
+
+
+    }
+
+    private void LayDanhSachQuanAn(DataSnapshot dataSnapshot,OdauInterface odauInterface,Location vitrihientai,int itemtieptheo,int itemdaco){
+        DataSnapshot dataSnapshotQuanAn = dataSnapshot.child("quanans");
+        //Lấy danh sách quán ăn
+        int i = 0;
+        for (DataSnapshot valueQuanAn : dataSnapshotQuanAn.getChildren()){
+
+            if(i == itemtieptheo){
+                break;
+            }
+            if(i < itemdaco){
+                i++;
+                continue;
+            }
+            i++;
+            QuanAnModel quanAnModel = valueQuanAn.getValue(QuanAnModel.class);
+            quanAnModel.setMaquanan(valueQuanAn.getKey());
+            //Lấy danh sách hình ảnh của quán ăn theo mã
+            DataSnapshot dataSnapshotHinhQuanAn = dataSnapshot.child("hinhanhquanans").child(valueQuanAn.getKey());
+
+            List<String> hinhanhlist = new ArrayList<>();
+
+            for (DataSnapshot valueHinhQuanAn : dataSnapshotHinhQuanAn.getChildren()){
+                hinhanhlist.add(valueHinhQuanAn.getValue(String.class));
+            }
+            quanAnModel.setHinhanhquanan(hinhanhlist);
+
+            //Lấy danh sách bình luân của quán ăn
+            DataSnapshot snapshotBinhLuan = dataSnapshot.child("binhluans").child(quanAnModel.getMaquanan());
+            List<BinhLuanModel> binhLuanModels = new ArrayList<>();
+
+            for (DataSnapshot valueBinhLuan : snapshotBinhLuan.getChildren()){
+                BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
+                binhLuanModel.setManbinhluan(valueBinhLuan.getKey());
+                ThanhVienModel thanhVienModel = dataSnapshot.child("thanhviens").child(binhLuanModel.getMauser()).getValue(ThanhVienModel.class);
+                binhLuanModel.setThanhVienModel(thanhVienModel);
+
+                List<String> hinhanhBinhLuanList = new ArrayList<>();
+                DataSnapshot snapshotNodeHinhAnhBL = dataSnapshot.child("hinhanhbinhluans").child(binhLuanModel.getManbinhluan());
+                for (DataSnapshot valueHinhBinhLuan : snapshotNodeHinhAnhBL.getChildren()){
+                    hinhanhBinhLuanList.add(valueHinhBinhLuan.getValue(String.class));
+                }
+                binhLuanModel.setHinhanhBinhLuanList(hinhanhBinhLuanList);
+
+                binhLuanModels.add(binhLuanModel);
+            }
+            quanAnModel.setBinhLuanModelList(binhLuanModels);
+
+            //Lấy chi nhánh quán ăn
+            DataSnapshot snapshotChiNhanhQuanAn = dataSnapshot.child("chinhanhquanans").child(quanAnModel.getMaquanan());
+            List<ChiNhanhQuanAnModel> chiNhanhQuanAnModels = new ArrayList<>();
+
+            for (DataSnapshot valueChiNhanhQuanAn : snapshotChiNhanhQuanAn.getChildren()){
+                ChiNhanhQuanAnModel chiNhanhQuanAnModel = valueChiNhanhQuanAn.getValue(ChiNhanhQuanAnModel.class);
+                Location vitriquanan = new Location("");
+                vitriquanan.setLatitude(chiNhanhQuanAnModel.getLatitude());
+                vitriquanan.setLongitude(chiNhanhQuanAnModel.getLongitude());
+
+                double khoangcach = vitrihientai.distanceTo(vitriquanan)/1000;
+                chiNhanhQuanAnModel.setKhoangcach(khoangcach);
+
+                chiNhanhQuanAnModels.add(chiNhanhQuanAnModel);
+            }
+
+            quanAnModel.setChiNhanhQuanAnModelList(chiNhanhQuanAnModels);
+
+            odauInterface.getDanhSachQuanAnModel(quanAnModel);
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (giaohang ? 1 : 0));
+        dest.writeString(giodongcua);
+        dest.writeString(giomocua);
+        dest.writeString(tenquanan);
+        dest.writeString(videogioithieu);
+        dest.writeString(maquanan);
+        dest.writeStringList(tienich);
+        dest.writeStringList(hinhanhquanan);
+        dest.writeLong(luotthich);
+        dest.writeLong(giatoida);
+        dest.writeLong(giatoithieu);
+        dest.writeTypedList(chiNhanhQuanAnModelList);
+        dest.writeTypedList(binhLuanModelList);
     }
 }
