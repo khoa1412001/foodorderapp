@@ -203,7 +203,34 @@ public class QuanAnModel implements Parcelable{
                 dataRoot = dataSnapshot;
                 LayDanhSachQuanAn(dataSnapshot,odauInterface,vitrihientai,itemtieptheo,itemdaco);
             }
+/*
+public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataSnapshot dataQuanAn = snapshot.child("quanans");
+                for (DataSnapshot value:dataQuanAn.getChildren()){
+                    QuanAnModel quanAnModel = value.getValue(QuanAnModel.class);
+                    quanAnModel.setMaquanan(value.getKey());
+                    DataSnapshot hinhanhQuanAn = snapshot.child("hinhanhquanans").child(value.getKey());
+                    List<String> hinhanhs = new ArrayList<>();
+                    //lay hinh anh
+                    for (DataSnapshot valueHinhanh: hinhanhQuanAn.getChildren())
+                        hinhanhs.add(valueHinhanh.getValue(String.class));
+                    quanAnModel.setHinhanh(hinhanhs);
+                    DataSnapshot dataBinhLuan = snapshot.child("binhluans").child(value.getKey());
 
+                    List<BinhLuanModel> binhLuanModels = new ArrayList<>();
+                    //lay binh luan
+                    for (DataSnapshot valueBinhLuan: dataBinhLuan.getChildren()){
+
+                        BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
+                        ThanhVienModel thanhVienModel = snapshot.child("thanhviens").child(binhLuanModel.getMauser()).getValue(ThanhVienModel.class);
+                        thanhVienModel.setMathanhvien(binhLuanModel.getMauser());
+                        binhLuanModel.setThanhVienModel(thanhVienModel);
+                        binhLuanModels.add(binhLuanModel);
+                    }
+                    quanAnModel.setBinhLuanModelList(binhLuanModels);
+                    odauInterface.getDanhSachQuanAnModel(quanAnModel);
+                }
+*/
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
