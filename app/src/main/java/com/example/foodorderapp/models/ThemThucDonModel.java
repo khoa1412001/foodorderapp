@@ -1,9 +1,5 @@
 package com.example.foodorderapp.models;
 
-/**
- * Created by Binh on 8/18/17.
- */
-
 public class ThemThucDonModel {
     String mathucdon;
     MonAnModel monAnModel;

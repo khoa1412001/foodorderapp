@@ -1,8 +1,8 @@
 package com.example.foodorderapp.adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderapp.R;
 import com.example.foodorderapp.models.QuanAnModel;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -27,10 +25,19 @@ public class AdapterRecycleOdau extends RecyclerView.Adapter<AdapterRecycleOdau.
 
     List<QuanAnModel> listQuanAn;
     int resource;
-    public AdapterRecycleOdau(List<QuanAnModel> quanAnModelList,int resource){
+    Context context;
+
+    public AdapterRecycleOdau(List<QuanAnModel> quanAnModelList, int resource){
         this.listQuanAn = quanAnModelList;
         this.resource = resource;
     }
+
+    public AdapterRecycleOdau(Context context, List<QuanAnModel> quanAnModelList,int resource){
+        this.listQuanAn = quanAnModelList;
+        this.resource = resource;
+        this.context = context;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView  txtTenQuan;
         Button btnDatmon;

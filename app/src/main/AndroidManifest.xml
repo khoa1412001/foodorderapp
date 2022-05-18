@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.foodorderapp">
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBiHvc0PJxWJQxpEimzpvrYbpv5JNu2MLg"/>
+
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +19,51 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrderApp">
+        <activity
+            android:name=".views.SlashScreenActivity"
+            android:exported="false"/>
+
+
+
+        <activity android:name=".views.ChiTietQuanAnActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".views.HienThiChiTietBinhLuanActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".views.CapNhatDanhSachWifiActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".views.PopupCapNhatWifiActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".views.DanDuongToiQuanAnActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".views.BinhLuanActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".views.ChonHinhBinhLuanActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".views.ThemQuanAnActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".views.forget_password_activity"
             android:exported="false" />
@@ -32,7 +83,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.MainActivity"
+            android:name=".views.TrangChuActivity"
             android:exported="true" />
     </application>
 

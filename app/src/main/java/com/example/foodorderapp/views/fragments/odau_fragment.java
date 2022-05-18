@@ -1,35 +1,54 @@
 package com.example.foodorderapp.views.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderapp.R;
 import com.example.foodorderapp.controllers.OdauController;
-import com.example.foodorderapp.models.QuanAnModel;
 
 public class odau_fragment extends Fragment {
     OdauController odauController;
-    RecyclerView recyclerView;
+    RecyclerView recyclerOdau;
+    ProgressBar progressBar;
+    SharedPreferences sharedPreferences;
+    NestedScrollView nestedScrollView;
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_fragment_odau,container,false);
-        recyclerView = view.findViewById(R.id.recycleOdau);
-        return view;
+        recyclerOdau = (RecyclerView) view.findViewById(R.id.recyclerOdau);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBarODau);
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestScrollViewODau);
 
+        sharedPreferences = getContext().getSharedPreferences("toado", Context.MODE_PRIVATE);
+        Location vitrihientai = new Location("");
+        vitrihientai.setLatitude(Double.parseDouble(sharedPreferences.getString("latitude","0")));
+        vitrihientai.setLongitude(Double.parseDouble(sharedPreferences.getString("longitude","0")));
+
+        odauController = new OdauController(getContext());
+
+
+        odauController.getDanhSachQuanAnController(getContext(),nestedScrollView,recyclerOdau,progressBar,vitrihientai);
+
+        return view;
     }
+
     @Override
     public void onStart() {
         super.onStart();
-        odauController = new OdauController(getContext());
-        odauController.getDanhSachQuanAnController(recyclerView);
+
+
     }
 }

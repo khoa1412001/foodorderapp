@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.foodorderapp.views.fragments.angi_fragment;
 import com.example.foodorderapp.views.fragments.odau_fragment;
 
+
 public class AdapterViewPagerTrangChu extends FragmentStatePagerAdapter {
     angi_fragment angiFragment;
     odau_fragment odauFragment;
