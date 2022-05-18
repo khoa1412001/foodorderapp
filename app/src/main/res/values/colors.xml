@@ -10,5 +10,6 @@
     <color name="red">#FFFF0000</color>
     <color name="primaryDark">#cd2027</color>
     <color name="gray">#A9A9A9</color>
-    <color name="transparentBackgrounDangNhap">#66000000</color>
+    <color name="colorAccent">#CCC</color>
+    <color name="transparentBackgroundDangnhap">#33000000</color>
 </resources>
